@@ -5,16 +5,15 @@ import requests
 import shutil
 from markdownify import markdownify as md
 from github import Github
+from datetime import datetime
 from git import Repo
-
 def download_image(image,g):
     r = requests.get(image["src"], stream=True)
     periods = image["src"].count(".")
     print("images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1))
-    with open("images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1), 'wb+') as f:
-        f.write(r.content)
     repo = g.get_user().get_repo("images-for-md")
-    repo.create_file("images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1),"jpg",r.content,branch="master")
+    remote_file_name = "images/"+image["src"].split("/")[-1] + datetime.now().strftime("%c%f").replace(" ","_") # have the image
+    repo.create_file(remote_file_name,"jpg",r.content,branch="master")
     return "https://github.com/juno-day/images-for-md/"+"images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1)
 
 def find_and_change_images(markdown_file):
@@ -22,7 +21,7 @@ def find_and_change_images(markdown_file):
     images = html.find_all("img")
     print(images)
     number=0
-    g = Github("dd6333d257fab46a891454f0155447077473b549")#9df519d4d46d250515014157cc7d0668857c42c8
+    g = Github("788938ee835cabe66124c7e362d01bd67865c95d") #9df519d4d46d250515014157cc7d0668857c42c8
     for image in images:
         new_image = download_image(image,g)
         html.find_all("img")[number]["src"] = new_image
