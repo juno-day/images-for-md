@@ -28,10 +28,10 @@ def is_image_downloadable(link):
 def main(file_path):
     
     # read file
-    # extract image links
-    # download image
-    # upload image to github repository (how is this to be done with os level installations?)
-    # obtain or create link to uploaded file
+    # extract image links (this should happen in a function)
+    # download image (this should happen in a function)
+    # upload image to github repository (how is this to be done with os level installations?) (this should certainly happen in a function)
+    # obtain or create link to uploaded file (prev function should return the url of the recently uploaded image)
     # replace the original link in the file with this new link to uploaded file
     # save the file to a new file for test purposes
     
