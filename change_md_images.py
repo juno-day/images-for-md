@@ -6,6 +6,7 @@ import shutil
 from markdownify import markdownify as md
 from github import Github
 from git import Repo
+
 def download_image(image,github):
     r = requests.get(image["src"], stream=True)
     periods = image["src"].count(".")
@@ -23,6 +24,7 @@ def download_image(image,github):
     origin = repo.remote('origin')
     origin.push()
     return "/Users/shorya/Dropbox/programming_shorya/python_code/md-to-img"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1)
+
 def find_and_change_images(markdown_file):
     html = BeautifulSoup(markdown(markdown_file), "html.parser")
     images = html.find_all("img")
@@ -34,10 +36,13 @@ def find_and_change_images(markdown_file):
         html.find_all("img")[number]["src"] = new_image
         number+=1
     return html
+
 def open_file_to_html(file):
     with open(file,"r") as f:
         markdown_from_file = f.read()
         return markdown_from_file
+
+if
     
 # 63b4e41dee5ad3735ffa34faba078b9c41854f6b
 print(sys.argv)
