@@ -15,7 +15,7 @@ def download_image(image,g):
     repo = g.get_user().get_repo("images-for-md")
     remote_file_name = "images/"+ datetime.now().strftime("%c%f").replace(" ","_").replace(":","_")+image["src"].split("/")[-1]  # have the image
     repo.create_file(remote_file_name,"jpg",r.content,branch="master")
-    return "https://github.com/juno-day/images-for-md/"+remote_file_name
+    return "https://juno-day.github.io/images-for-md/"+remote_file_name
 
 def find_and_change_images(markdown_file):
     html = BeautifulSoup(markdown(markdown_file), "html.parser")
@@ -24,7 +24,7 @@ def find_and_change_images(markdown_file):
     number=0
     with open("../gitcreds.json","r") as f:
         data = json.load(f)
-    g = Github(data["git_cred"]) #9df519d4d46d250515014157cc7d0668857c42c8
+    g = Github(data["git_cred"]) #{ "git_cred": "" }
     for image in images:
         new_image = download_image(image,g)
         html.find_all("img")[number]["src"] = new_image
@@ -37,7 +37,7 @@ def open_file_to_html(file):
         return markdown_from_file
 
     
-# 63b4e41dee5ad3735ffa34faba078b9c41854f6b
+
 try:
     print(sys.argv)
     file = sys.argv[1]
