@@ -10,19 +10,19 @@ from git import Repo
 def download_image(image,g):
     r = requests.get(image["src"], stream=True)
     periods = image["src"].count(".")
-    print("/Users/shorya/Dropbox/programming_shorya/python_code/md-to-img"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1))
-    with open("/Users/shorya/Dropbox/programming_shorya/python_code/md-to-img"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1), 'wb+') as f:
+    print("images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1))
+    with open("images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1), 'wb+') as f:
         f.write(r.content)
-    repo = g.get_user().get_repo("images_for_md")
-    repo.create_file("images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1),"img",r.content)
-    return "https://github.com/juno-day/images-for-md"+"images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1)
+    repo = g.get_user().get_repo("images-for-md")
+    repo.create_file("images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1),"jpg",r.content,branch="master")
+    return "https://github.com/juno-day/images-for-md/"+"images/"+image["src"].replace("/","_").replace(":","_").replace(".","_",periods-1)
 
 def find_and_change_images(markdown_file):
     html = BeautifulSoup(markdown(markdown_file), "html.parser")
     images = html.find_all("img")
     print(images)
     number=0
-    g = Github("9df519d4d46d250515014157cc7d0668857c42c8")#9df519d4d46d250515014157cc7d0668857c42c8
+    g = Github("dd6333d257fab46a891454f0155447077473b549")#9df519d4d46d250515014157cc7d0668857c42c8
     for image in images:
         new_image = download_image(image,g)
         html.find_all("img")[number]["src"] = new_image
@@ -34,13 +34,13 @@ def open_file_to_html(file):
         markdown_from_file = f.read()
         return markdown_from_file
 
-if __name__ == "__main__":
-    main(sys.argv[1])
     
 # 63b4e41dee5ad3735ffa34faba078b9c41854f6b
-print(sys.argv)
-file = sys.argv[1]
-
+try:
+    print(sys.argv)
+    file = sys.argv[1]
+except:
+    file = "./test.md"
 markdowntxt = open_file_to_html(file)
 new_html_file = find_and_change_images(markdowntxt)
 print(new_html_file.find_all("img"))
